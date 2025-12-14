@@ -28,7 +28,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', "True") == "True"
 SECRET_KEY = 'django-insecure-!k#g@-)v9nd@x*vip_j6!a(f116#g3hhl1zi!k8!=^r&w+l-*@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -139,8 +139,8 @@ CSRF_COOKIES_SECURE = False
 # Set true in production with HTTPS
 SESSION_COOKIE_SECURE = False
 
-INSTALLED_APPS += ["debug_toolbar"]
-MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+"""INSTALLED_APPS += ["debug_toolbar"]
+MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]"""
 
 INTERNAL_IPS = ["127.0.0.1"]
 
