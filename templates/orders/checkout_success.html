@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="checkout-page">
+  <h1>Thank you!</h1>
+  <p>Your order <strong>#{{ order.id }}</strong> has been placed successfully.</p>
+  <p>We will ship it to: {{ order.full_name }}, {{ order.address }}, {{ order.city }}.</p>
+  <a href="{% url 'products:product_list' %}" class="btn-primary btn-large">
+    Continue shopping
+  </a>
+</section>
+{% endblock %}

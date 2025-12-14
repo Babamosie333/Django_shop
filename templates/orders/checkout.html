@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="checkout-page">
+  <h1>Checkout</h1>
+
+  <div class="checkout-layout">
+    <div class="checkout-form">
+      <h2>Shipping details</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-field">
+            {{ field.label_tag }} {{ field }}
+            {% if field.errors %}
+              <div class="field-error">{{ field.errors|striptags }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn-primary btn-large">Place order</button>
+      </form>
+    </div>
+
+    <aside class="checkout-summary">
+      <h2>Order summary</h2>
+      <ul>
+        {% for item in cart.items.all %}
+          <li>
+            {{ item.product.name }} × {{ item.quantity }}
+            <span>₹{{ item.subtotal }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="summary-total">
+        Total: <strong>₹{{ cart.total }}</strong>
+      </p>
+    </aside>
+  </div>
+</section>
+{% endblock %}

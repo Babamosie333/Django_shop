@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-card">
+  <h1>Log in</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-field">
+      {{ form.username.label_tag }} {{ form.username }}
+    </div>
+    <div class="form-field">
+      {{ form.password.label_tag }} {{ form.password }}
+    </div>
+    <button type="submit" class="btn-primary btn-large">Log in</button>
+  </form>
+  <p class="auth-switch">
+    New here? <a href="{% url 'accounts:register' %}">Create an account</a>
+  </p>
+</section>
+{% endblock %}

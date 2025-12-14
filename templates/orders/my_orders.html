@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="orders-page">
+  <h1>My orders</h1>
+
+  {% if orders %}
+    <div class="orders-list">
+      {% for order in orders %}
+      <article class="order-card">
+        <header>
+          <h2>Order #{{ order.id }}</h2>
+          <span class="order-date">
+            {{ order.created_at|date:"M d, Y H:i" }}
+          </span>
+        </header>
+
+        <p>
+          Ship to: {{ order.full_name }}, {{ order.address }}, {{ order.city }}
+        </p>
+
+        <ul>
+          {% for item in order.items.all %}
+          <li>
+            {{ item.product.name }} × {{ item.quantity }}
+            <span>₹{{ item.subtotal }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <p class="order-total">
+          Total: <strong>₹{{ order.total }}</strong>
+          <span class="badge-status badge-{{ order.status }}">
+            {{ order.get_status_display }}
+          </span>
+          {% if order.paid %}
+            <span class="badge-paid">Paid</span>
+          {% else %}
+            <span class="badge-unpaid">Unpaid</span>
+          {% endif %}
+        </p>
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>You have not placed any orders yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

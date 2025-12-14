@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <>
+  <meta charset="utf-8">
+  <title>Django Shop</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script defer src="{% static 'js/main.js' %}"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="message {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+      <div class="nav-logo">🛒 Django Shop</div>
+     <nav class="nav-links">
+  <a href="/">Home</a>
+  <a href="/cart/">Cart</a>
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'orders:my_orders' %}">My Orders</a>
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+    <span class="nav-username">Hi, {{ user.username }}</span>
+    <a href="{% url 'accounts:logout' %}">Logout</a>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">Login</a>
+    <a href="{% url 'accounts:register' %}">Sign up</a>
+  {% endif %}
+</nav>
+    </header>
+
+    <main class="page">
+      {% block content %}
+      <section class="hero">
+        <h1>Welcome to Django Shop</h1>
+        <p>Your simple demo e‑commerce built with Django.</p>
+        <a href="/" class="btn-primary">Start shopping</a>
+      </section>
+      {% endblock %}
+    </main>
+
+    <footer class="footer">
+      <p>&copy; {{ now|date:"Y" }} Django Shop. Built for learning. Author: Vikram_Singh.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="catalog">
+  <aside class="catalog-sidebar">
+    <h2>Categories</h2>
+    <ul>
+      <li>
+        <a href="{% url 'products:product_list' %}"
+           class="{% if not active_category %}active{% endif %}">
+          All products
+        </a>
+      </li>
+      {% for cat in categories %}
+      <li>
+        <a href="{% url 'products:product_list_by_category' cat.slug %}"
+           class="{% if active_category and active_category.id == cat.id %}active{% endif %}">
+          {{ cat.name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <div class="catalog-main">
+    <h1 class="section-title">
+      <form method="get" class="search-bar">
+  <input type="text" name="q" placeholder="Search products..."
+         value="{{ query|default_if_none:'' }}">
+  <button type="submit">Search</button>
+  {% if query %}
+    <a href="{% url 'products:product_list' %}" class="clear-search">Clear</a>
+  {% endif %}
+</form>
+      {% if active_category %}{{ active_category.name }}{% else %}All Products{% endif %}
+    </h1>
+
+    <div class="product-grid">
+      {% for product in products %}
+      <article class="product-card">
+        <div class="product-image">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+            <div class="placeholder">No image</div>
+          {% endif %}
+        </div>
+        <div class="product-body">
+          <h3>{{ product.name }}</h3>
+          <p class="product-short">{{ product.short_description|default:"Amazing product for you." }}</p>
+          <div class="product-price-row">
+            <span class="price">₹{{ product.price }}</span>
+            {% if product.old_price %}
+            <span class="old-price">₹{{ product.old_price }}</span>
+            {% endif %}
+          </div>
+          <a href="{% url 'products:product_detail' product.slug %}" class="btn-primary btn-small">
+            View details
+          </a>
+        </div>
+      </article>
+      {% empty %}
+      <p>No products found in this category.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% if page_obj.has_other_pages %}
+<nav class="pagination">
+  {% if page_obj.has_previous %}
+    <a href="?{% if query %}q={{ query }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+  {% endif %}
+
+  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+  {% if page_obj.has_next %}
+    <a href="?{% if query %}q={{ query }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+  {% endif %}
+</nav>
+{% endif %}
+{% endblock %}

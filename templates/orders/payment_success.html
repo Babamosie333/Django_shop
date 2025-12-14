@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-card">
+  <h1>Payment successful</h1>
+  <p>Order #{{ order.id }} has been paid.</p>
+  <p>Thank you for your purchase!</p>
+  <a class="btn-primary btn-large" href="{% url 'orders:my_orders' %}">View my orders</a>
+</section>
+{% endblock %}

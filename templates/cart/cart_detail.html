@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="cart-page">
+  <h1>Your cart</h1>
+
+  {% if cart.items.all %}
+  <div class="cart-layout">
+    <div class="cart-items">
+      {% for item in cart.items.all %}
+      <article class="cart-item-card">
+        <div class="cart-item-img">
+          {% if item.product.image %}
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+          {% else %}
+            <div class="placeholder">No image</div>
+          {% endif %}
+        </div>
+        <div class="cart-item-info">
+          <h2>{{ item.product.name }}</h2>
+          <p class="product-short">{{ item.product.short_description }}</p>
+          <div class="cart-item-row">
+            <span class="price">₹{{ item.product.price }}</span>
+            <span class="qty-label">Qty:</span>
+            <div class="qty-controls">
+              <a href="{% url 'cart:cart_decrement' item.id %}" class="qty-btn">-</a>
+              <span class="qty-value">{{ item.quantity }}</span>
+              <a href="{% url 'cart:cart_increment' item.id %}" class="qty-btn">+</a>
+            </div>
+            <span class="subtotal">Subtotal: ₹{{ item.subtotal }}</span>
+          </div>
+          <a href="{% url 'cart:cart_remove' item.id %}" class="remove-link">Remove</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <aside class="cart-summary">
+      <h2>Order summary</h2>
+      <p>Total items: {{ cart.items.count }}</p>
+      <p class="cart-total">Total: ₹{{ cart.total }}</p>
+      <a href="{% url 'orders:checkout' %}" class="btn-primary btn-large">Proceed to checkout</a>
+    </aside>
+  </div>
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+</section>
+{% endblock %}
